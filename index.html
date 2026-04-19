@@ -1,1 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta chartset="UTF-8">
+    <title>Students By Major</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+</head>
+<body style="margin-left: 30px;">
+  <h1>Select a Majoir</h1>
 
+  <input type="button" value="CIT Majors" onclick="shwoCIT()">
+  <input type="button" value="Business Majors" onclick="showBUS()">
+
+  <h2> We filter our data set by major</h2>
+
+  <div id="result"></div>div>
+  <script id="tableTemplate" type="text/x-handlebars-template">
+    <table cellspacing="12">
+    <tr>
+      <th>Name</th>
+      <th>Major</th>
+      <th>Midterm</th>
+      <th>Final</th>
+  </tr>
+    {{#each rows}}
+    <tr>
+      <td>{{name}}</td>
+      <td>{{major}}</td>
+      <td>{{midterm}}</td>
+      <td>{{final}}</td>
+  </tr>
+    {{/each}}
+  </tabel>
+  </script>
+
+  <script>
+    var students = [];
+
+    window.onload = ffunction() {
+      fetch("cit5students.json")
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(data) {
+        students = data;
+      });
+    }
+    displayTable(newList);
+    }
+    function showBUS() {
+      var newList = [];
+
+      for (var i = 0; i < students.length; i++) {
+        if (students[i].major == "BUS") {
+          newList.push(students[i]);
+        }
+      }
+      displayTable(newlist);
+    }
+    function displayTable(list) {
+      var source = document.getElementById("tableTemplate").innerHTML;
+      var template = Handlebars.compile(source);
+      var html = template({ rows: list });
+      document.getElementById("result").innerHTML = html;
+    }
+      
+  </script>
+</body>  
+</html>
