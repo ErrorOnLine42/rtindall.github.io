@@ -1,1 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Students by Major</title>
+    <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+</head>
 
+<body>
+
+<h1>Select a Major</h1>
+
+<button onclick="filterMajor('CIT')">CIT Majors</button>
+<button onclick="filterMajor('BUS')">Business Majors</button>
+
+<h2>We filter our dataset by major</h2>
+
+<div id="output"></div>
+
+<!-- Handlebars Template -->
+<script id="student-template" type="text/x-handlebars-template">
+    <table border="1">
+        <tr>
+            <th>Name</th>
+            <th>Major</th>
+            <th>Midterm</th>
+            <th>Final</th>
+        </tr>
+        {{#each students}}
+        <tr>
+            <td>{{name}}</td>
+            <td>{{major}}</td>
+            <td>{{midterm}}</td>
+            <td>{{final}}</td>
+        </tr>
+        {{/each}}
+    </table>
+</script>
+
+<script>
+let allStudents = [];
+
+// Load JSON with fetch (Ajax)
+fetch('cit5students.json')
+    .then(response => response.json())
+    .then(data => {
+        allStudents = data;
+    });
+
+// Filter function
+function filterMajor(major) {
+    let filtered = allStudents.filter(student => student.major === major);
+    displayData(filtered);
+}
+
+// Display using Handlebars
+function displayData(data) {
+    let source = document.getElementById("student-template").innerHTML;
+    let template = Handlebars.compile(source);
+
+    let html = template({ students: data });
+
+    document.getElementById("output").innerHTML = html;
+}
+</script>
+
+</body>
+</html>
