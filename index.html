@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta chartset="UTF-8">
+    <meta charset="UTF-8">
     <title>Students By Major</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
 </head>
 <body style="margin-left: 30px;">
-  <h1>Select a Majoir</h1>
+  <h1>Select a Major</h1>
 
-  <input type="button" value="CIT Majors" onclick="shwoCIT()">
+  <input type="button" value="CIT Majors" onclick="showCIT()">
   <input type="button" value="Business Majors" onclick="showBUS()">
 
   <h2> We filter our data set by major</h2>
 
-  <div id="result"></div>div>
+  <div id="result"></div>
   <script id="tableTemplate" type="text/x-handlebars-template">
     <table cellspacing="12">
     <tr>
@@ -23,20 +23,20 @@
       <th>Final</th>
   </tr>
     {{#each rows}}
-    <tr>
+  <tr>
       <td>{{name}}</td>
       <td>{{major}}</td>
       <td>{{midterm}}</td>
       <td>{{final}}</td>
   </tr>
     {{/each}}
-  </tabel>
+  </table>
   </script>
 
   <script>
     var students = [];
 
-    window.onload = ffunction() {
+    window.onload = function() {
       fetch("cit5students.json")
       .then(function(response) {
         return response.json();
@@ -45,6 +45,14 @@
         students = data;
       });
     }
+    function showCIT() {
+      var newList = [];
+
+      for (var i = 0; i< students.length; i++) {
+        if(students[i].major =="CIT") {
+          newList.push(students[i]);
+        }
+      }    
     displayTable(newList);
     }
     function showBUS() {
@@ -55,7 +63,7 @@
           newList.push(students[i]);
         }
       }
-      displayTable(newlist);
+      displayTable(newList);
     }
     function displayTable(list) {
       var source = document.getElementById("tableTemplate").innerHTML;
