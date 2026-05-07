@@ -1,75 +1,74 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Students By Major</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+<html><head><title>speeding tickets</title>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+ <script src="https://unpkg.com/vue@next"></script> 
+
 </head>
-<body style="margin-left: 30px;">
-  <h1>Select a Major</h1>
+<body>
 
-  <input type="button" value="CIT Majors" onclick="showCIT()">
-  <input type="button" value="Business Majors" onclick="showBUS()">
+<div class="container">
+<nav class="navbar navbar-inverse">
 
-  <div id="result"></div>
-  <script id="tableTemplate" type="text/x-handlebars-template">
-    <table cellspacing="12">
-    <tr>
-      <th>Name</th>
-      <th>Major</th>
-      <th>Midterm</th>
-      <th>Final</th>
-  </tr>
-    {{#each rows}}
-  <tr>
-      <td>{{name}}</td>
-      <td>{{major}}</td>
-      <td>{{midterm}}</td>
-      <td>{{final}}</td>
-  </tr>
-    {{/each}}
-  </table>
-  </script>
+    <div class="navbar-header">
+        <a class="navbar-brand" href="#">Our Website</a>
+    </div>
+    <div>
+       <ul class="nav navbar-nav">
+           <li class="active"><a href="index.html">All Tickets</a></li>
+           <li><a href="25over.html">25mph or move over</a></li>
+       </ul>
+    </div>
 
-  <script>
-    var students = [];
+</nav>    <!-- end nav-bar -->
 
-    window.onload = function() {
-      fetch("cit5students.json")
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(data) {
-        students = data;
-      });
-    }
-    function showCIT() {
-      var newList = [];
+<div id="ticketApp">
 
-      for (var i = 0; i< students.length; i++) {
-        if(students[i].major =="CIT") {
-          newList.push(students[i]);
-        }
-      }    
-    displayTable(newList);
-    }
-    function showBUS() {
-      var newList = [];
+     <h2>Tickets July 4, 2014, Minneapolis/St. Paul</h2>
+          
+          <table class="table table-bordered table-striped">
+              <tr>
+                  <th>Ticket ID</th>
+                  <th>Time</th>
+                  <th>Posted Speed</th>
+                  <th>MPH Over</th>
+                  <th>Violator Sex</th>
+              </tr>
+              <tr v-for = "ticket in tickets">
+                  <td>{{ticket.tid}}</td>
+                  <td>{{ticket.stop_time}}</td>
+                  <td>{{ticket.posted_speed}}</td>
+                  <td>{{ticket.actual_speed - ticket.posted_speed}}</td> 
+                  <td>{{ticket.violator_sex}}</td>
+              </tr>
+         </table>
+  
+</div>   <!-- end gpaApp -->
+</div>   <!-- end class= 'container' -->
 
-      for (var i = 0; i < students.length; i++) {
-        if (students[i].major == "BUS") {
-          newList.push(students[i]);
-        }
-      }
-      displayTable(newList);
-    }
-    function displayTable(list) {
-      var source = document.getElementById("tableTemplate").innerHTML;
-      var template = Handlebars.compile(source);
-      var html = template({ rows: list });
-      document.getElementById("result").innerHTML = html;
-    }
+<script>
+       let app = Vue.createApp({
+            data() {     // returns an object of data
+                return {
+                    tickets: [],           // array to hold student data
+                }
+            },
+            created() {      // section executes as page loads
+                this.getData()  // load json data as page loads
+            },
+            methods: {    // ajax request
+                async getData() {
+                    const response = await fetch('tickets1.json')
+                    this.tickets = await response.json()
+                    //tickets = data.filter( (item) => item.major == majSelect );     
+                },
+            }
+          })
       
-  </script>
-</body>  
-</html>
+      app.mount('#ticketApp')   //in which div to mount the vue app
+		  
+
+</script>
+</body></html>
