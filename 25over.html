@@ -6,14 +6,14 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
-  <script src="https://upkg.com/vue@next"></script>
+  <script src="https://upkg.com/vue@3"></script>
 
 </head>
 
   <body>
     <div class="container">
       <nav class="navbar navbar-inverse">
-        <div class="navbar=headfer">
+        <div class="navbar=header">
           <a class="navbar-brand" href="#">Our Website</a>
         </div>
 
@@ -25,7 +25,7 @@
 
       <div id="ticketApp">
         <h2> Tickets July 4, 2014, Minneapolis/St.Paul</h2>
-        <table class="table table-borded table-striped">
+        <table class="table table-boarded table-striped">
           <tr>
             <th>Ticket ID</th>
             <th>Time</th>
@@ -33,7 +33,7 @@
             <th>MPH Over</th>
             <th> Violator Sex</th>
           </tr>
-            <tr v-for = "ticket in tickets">
+            <tr v-for = "ticket in overTickets">
                   <td>{{ticket.tid}}</td>
                   <td>{{ticket.stop_time}}</td>
                   <td>{{ticket.posted_speed}}</td>
@@ -48,27 +48,27 @@
       let app =Vue.createApp({
         data() {
           return{
-            tickets[]
+            tickets: []
           }
-        }
+        },
         created() {
                              this.getData()
       },
       computed: {
         overTickets() {
           return this.tickets.filter(function(ticket) {
-            return.ticket.actual_speed - ticket.posted_speed >= 25
+            return ticket.actual_speed - ticket.posted_speed >= 25
           })
         }
       },
       methods: {
-        asynce getData () {
+        async getData () {
           const response = await fetch('tickets1.json')
           this.tickets = await response.json()
         }
       }
       })
-      app.mount('#ticketApp")
+      app.mount('#ticketApp')
     </script>
   </body>
 </html>
